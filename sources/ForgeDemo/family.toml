@@ -1,0 +1,7 @@
+# Metadata the build and specimen read. The designspace owns axes and masters; this file owns everything else.
+name = "Forge Demo"
+slug = "forge-demo"
+status = "draft"            # draft | released — drafts build but are labelled in the specimen
+designers = ["Kaleb Ashiangmor"]
+description = "Geometric monoline caps used to prove the pipeline end to end: two masters, one weight axis."
+sample = "FONT INFO. TONE. HELLO."

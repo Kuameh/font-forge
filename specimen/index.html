@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Font Forge Specimens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f5f1; --surface: #ffffff; --ink: #16150f; --muted: #6b695f; --line: #e2e0d7;
+    --accent: #d9480f; --radius: 12px; --space-1: 4px; --space-2: 8px; --space-3: 16px; --space-4: 24px; --space-5: 48px;
+    --ui: "Inter", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #12110d; --surface: #1b1a15; --ink: #f1efe6; --muted: #9a978b; --line: #2e2c25; --accent: #ff7a3d; }
+  }
+  :root[data-theme="dark"] { --bg: #12110d; --surface: #1b1a15; --ink: #f1efe6; --muted: #9a978b; --line: #2e2c25; --accent: #ff7a3d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--ui); }
+  main { max-width: 1080px; margin: 0 auto; padding: var(--space-5) var(--space-3); }
+  header h1 { font-size: 28px; font-weight: 600; margin: 0 0 var(--space-1); letter-spacing: -0.01em; }
+  header p { color: var(--muted); margin: 0 0 var(--space-5); }
+  .family { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: var(--space-4); margin-bottom: var(--space-4); }
+  .head { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: baseline; justify-content: space-between; }
+  .head h2 { margin: 0; font-size: 20px; font-weight: 600; }
+  .badge { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); border: 1px solid currentColor; border-radius: 999px; padding: 2px var(--space-2); }
+  .desc { color: var(--muted); margin: var(--space-2) 0 var(--space-4); }
+  .tester { width: 100%; border: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: transparent; color: var(--ink);
+    padding: var(--space-4) 0; font-size: 72px; line-height: 1.1; outline: none; overflow-wrap: anywhere; min-height: 44px; }
+  .controls { display: flex; flex-wrap: wrap; gap: var(--space-4); padding: var(--space-3) 0; color: var(--muted); font-size: 13px; }
+  .controls label { display: flex; align-items: center; gap: var(--space-2); min-height: 44px; }
+  .controls input[type=range] { width: 180px; accent-color: var(--accent); }
+  .controls output { color: var(--ink); font-variant-numeric: tabular-nums; min-width: 3ch; }
+  .glyphs { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 1px; border-radius: 8px; overflow: hidden; padding: 1px; margin: var(--space-3) 0; }
+  .glyphs span { background: var(--surface); box-shadow: 0 0 0 1px var(--line); aspect-ratio: 1; display: grid; place-items: center; font-size: 32px; }
+  details { margin-top: var(--space-3); }
+  summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; align-items: center; }
+  .dl { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .dl h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 0 0 var(--space-1); }
+  .dl a { display: block; color: var(--ink); text-decoration: none; padding: var(--space-1) 0; overflow-wrap: anywhere; }
+  .dl a:hover { color: var(--accent); }
+  .empty { color: var(--muted); }
+  @media (max-width: 600px) { .tester { font-size: 44px; } main { padding-top: var(--space-4); } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Font Forge</h1>
+    <p>Every family built from this repository. Type in any specimen to try it.</p>
+  </header>
+  <div id="families"></div>
+</main>
+<script>
+const FAMILIES = [{"name": "Forge Demo", "slug": "forge-demo", "status": "draft", "designers": ["Kaleb Ashiangmor"], "description": "Geometric monoline caps used to prove the pipeline end to end: two masters, one weight axis.", "sample": "FONT INFO. TONE. HELLO.", "axes": [{"tag": "wght", "min": 300.0, "default": 300.0, "max": 800.0}], "chars": ".EFHILNOT", "webfont": "../fonts/forge-demo/webfonts/ForgeDemo-VF.woff2", "downloads": {"variable": ["../fonts/forge-demo/variable/ForgeDemo-VF.ttf"], "ttf": ["../fonts/forge-demo/ttf/ForgeDemo-Bold.ttf", "../fonts/forge-demo/ttf/ForgeDemo-ExtraBold.ttf", "../fonts/forge-demo/ttf/ForgeDemo-Light.ttf", "../fonts/forge-demo/ttf/ForgeDemo-Medium.ttf", "../fonts/forge-demo/ttf/ForgeDemo-Regular.ttf", "../fonts/forge-demo/ttf/ForgeDemo-SemiBold.ttf"], "otf": ["../fonts/forge-demo/otf/ForgeDemo-Bold.otf", "../fonts/forge-demo/otf/ForgeDemo-ExtraBold.otf", "../fonts/forge-demo/otf/ForgeDemo-Light.otf", "../fonts/forge-demo/otf/ForgeDemo-Medium.otf", "../fonts/forge-demo/otf/ForgeDemo-Regular.otf", "../fonts/forge-demo/otf/ForgeDemo-SemiBold.otf"], "webfonts": ["../fonts/forge-demo/webfonts/ForgeDemo-Bold.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-ExtraBold.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-Light.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-Medium.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-Regular.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-SemiBold.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-VF.woff2"]}}];
+const root = document.getElementById("families");
+if (!FAMILIES.length) root.innerHTML = '<p class="empty">No built fonts yet. Run <code>make build</code>.</p>';
+for (const f of FAMILIES) {
+  const face = new FontFace(f.slug, `url(${f.webfont})`, { weight: `${f.axes[0]?.min ?? 400} ${f.axes[0]?.max ?? 400}` });
+  document.fonts.add(face); face.load();
+  const el = document.createElement("section");
+  el.className = "family";
+  el.innerHTML = `
+    <div class="head"><h2></h2>${f.status === "draft" ? '<span class="badge">Draft</span>' : ""}</div>
+    <p class="desc"></p>
+    <div class="tester" contenteditable="true" spellcheck="false"></div>
+    <div class="controls">
+      ${f.axes.map(a => `<label>${a.tag}<input type="range" data-axis="${a.tag}" min="${a.min}" max="${a.max}" value="${a.default}" step="1"><output>${a.default}</output></label>`).join("")}
+      <label>size<input type="range" data-size min="16" max="160" value="72"><output>72</output></label>
+    </div>
+    <div class="glyphs"></div>
+    <details><summary>Download</summary><div class="dl"></div></details>`;
+  el.querySelector("h2").textContent = f.name;
+  el.querySelector(".desc").textContent = `${f.description} — ${f.designers.join(", ")}`;
+  const tester = el.querySelector(".tester");
+  tester.textContent = f.sample;
+  const glyphs = el.querySelector(".glyphs");
+  for (const ch of f.chars) { const s = document.createElement("span"); s.textContent = ch; glyphs.append(s); }
+  for (const node of [tester, glyphs]) node.style.fontFamily = `"${f.slug}", var(--ui)`;
+  const apply = () => {
+    const settings = [...el.querySelectorAll("[data-axis]")].map(i => `"${i.dataset.axis}" ${i.value}`).join(", ");
+    for (const node of [tester, glyphs]) node.style.fontVariationSettings = settings;
+    tester.style.fontSize = el.querySelector("[data-size]").value + "px";
+  };
+  el.querySelectorAll("input[type=range]").forEach(i => i.addEventListener("input", () => { i.nextElementSibling.textContent = i.value; apply(); }));
+  apply();
+  const dl = el.querySelector(".dl");
+  for (const [kind, files] of Object.entries(f.downloads)) {
+    const col = document.createElement("div");
+    col.innerHTML = `<h3>${kind}</h3>`;
+    for (const href of files) { const a = document.createElement("a"); a.href = href; a.download = ""; a.textContent = href.split("/").pop(); col.append(a); }
+    dl.append(col);
+  }
+  root.append(el);
+}
+</script>
+</body>
+</html>

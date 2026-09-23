@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<designspace format="5.0">
+  <axes>
+    <axis tag="wght" name="Weight" minimum="300" maximum="800" default="300"/>
+  </axes>
+  <sources>
+    <source filename="ForgeDemo-Light.ufo" familyname="Forge Demo" stylename="Light">
+      <location>
+        <dimension name="Weight" xvalue="300"/>
+      </location>
+    </source>
+    <source filename="ForgeDemo-ExtraBold.ufo" familyname="Forge Demo" stylename="ExtraBold">
+      <location>
+        <dimension name="Weight" xvalue="800"/>
+      </location>
+    </source>
+  </sources>
+  <instances>
+    <instance familyname="Forge Demo" stylename="Light" filename="instances/ForgeDemo-Light.ufo">
+      <location>
+        <dimension name="Weight" xvalue="300"/>
+      </location>
+    </instance>
+    <instance familyname="Forge Demo" stylename="Regular" filename="instances/ForgeDemo-Regular.ufo">
+      <location>
+        <dimension name="Weight" xvalue="400"/>
+      </location>
+    </instance>
+    <instance familyname="Forge Demo" stylename="Medium" filename="instances/ForgeDemo-Medium.ufo">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
+      </location>
+    </instance>
+    <instance familyname="Forge Demo" stylename="SemiBold" filename="instances/ForgeDemo-SemiBold.ufo">
+      <location>
+        <dimension name="Weight" xvalue="600"/>
+      </location>
+    </instance>
+    <instance familyname="Forge Demo" stylename="Bold" filename="instances/ForgeDemo-Bold.ufo">
+      <location>
+        <dimension name="Weight" xvalue="700"/>
+      </location>
+    </instance>
+    <instance familyname="Forge Demo" stylename="ExtraBold" filename="instances/ForgeDemo-ExtraBold.ufo">
+      <location>
+        <dimension name="Weight" xvalue="800"/>
+      </location>
+    </instance>
+  </instances>
+</designspace>
