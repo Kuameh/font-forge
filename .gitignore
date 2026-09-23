@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+sources/*/instances/
+master_ufo/
+instance_ufo/
+.DS_Store
+.claude/
