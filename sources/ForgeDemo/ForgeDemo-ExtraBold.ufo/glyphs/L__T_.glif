@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="L_T" format="2">
+  <advance width="900"/>
+  <outline>
+    <contour>
+      <point x="60" y="0" type="line"/>
+      <point x="210" y="0" type="line"/>
+      <point x="210" y="700" type="line"/>
+      <point x="60" y="700" type="line"/>
+    </contour>
+    <contour>
+      <point x="60" y="0" type="line"/>
+      <point x="420.0" y="0" type="line"/>
+      <point x="420.0" y="150" type="line"/>
+      <point x="60" y="150" type="line"/>
+    </contour>
+    <contour>
+      <point x="250" y="550" type="line"/>
+      <point x="840" y="550" type="line"/>
+      <point x="840" y="700" type="line"/>
+      <point x="250" y="700" type="line"/>
+    </contour>
+    <contour>
+      <point x="470.0" y="0" type="line"/>
+      <point x="620.0" y="0" type="line"/>
+      <point x="620.0" y="700" type="line"/>
+      <point x="470.0" y="700" type="line"/>
+    </contour>
+  </outline>
+</glyph>

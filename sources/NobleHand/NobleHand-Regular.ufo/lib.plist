@@ -83,6 +83,9 @@
       <string>hyphen</string>
       <string>period</string>
       <string>slash</string>
+      <string>f_f</string>
+      <string>f_t</string>
+      <string>t_t</string>
     </array>
   </dict>
 </plist>

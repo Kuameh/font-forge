@@ -12,6 +12,10 @@
 3. `make build FAMILY=<Family>`, then `make serve`. Drag every axis slider end to end and look for twisting or broken shapes.
 4. Commit sources, `fonts/` and `specimen/` together.
 
+## Ligatures
+
+Draw the joined glyph and name it after its parts with underscores (`f_f`, `T_T`). Add the rule to the UFO's `features.fea`: `liga` if it should always form, `dlig` if people should opt in. In a multi-master family, copy the same `features.fea` into every master ([ADR-0009](docs/decisions/0009-ligatures-live-in-each-ufos-feature-file.md), pitfall #11).
+
 ## Adding a family
 
 1. Create `sources/<FamilyName>/` with at least two compatible UFO 3 masters, a `<FamilyName>.designspace` (axes, masters, named instances; the default must sit on a master) and `family.toml`. A one-weight family is a single UFO with no designspace instead ([ADR-0008](docs/decisions/0008-single-master-families-ship-static-fonts-only.md)). Copy the fields from `sources/ForgeDemo/family.toml`.
@@ -26,5 +30,6 @@ If your change picks between real alternatives (a new axis convention, a new out
 ## Review checklist
 
 - [ ] All masters still interpolate (specimen sliders look right end to end)
+- [ ] Ligatures toggle on and off in the specimen
 - [ ] `fonts/` and `specimen/` rebuilt in this change
 - [ ] Docs, ADRs and pitfalls updated where relevant, and indexed in `docs/README.md`

@@ -27,7 +27,7 @@ Steps 2–4 differ by family kind: multi-master families use `fontmake -m <desig
 5. woff2-compress the variable (if any) and every static TTF → `webfonts/`.
 6. Copy `family.toml` into `fonts/<slug>/`; delete `sources/<Family>/instances/`.
 
-Then `make build` runs `scripts/specimen.py` ([specimen.md](specimen.md)).
+Then `make build` runs `scripts/specimen.py` ([specimen.md](specimen.md)). OpenType features come from each UFO's `features.fea`, which fontmake compiles; for a designspace family, the default master's copy is the one used ([ADR-0009](../decisions/0009-ligatures-live-in-each-ufos-feature-file.md)).
 
 ## Toolchain
 

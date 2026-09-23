@@ -1,0 +1,9 @@
+languagesystem DFLT dflt;
+languagesystem latn dflt;
+
+# Standard ligatures, on by default (ADR-0009).
+feature liga {
+    sub T T by T_T;
+    sub F F by F_F;
+    sub L T by L_T;
+} liga;
