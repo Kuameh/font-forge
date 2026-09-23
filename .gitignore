@@ -1,7 +1,27 @@
+# Python toolchain
 .venv/
 __pycache__/
+*.pyc
+
+# fontmake leftovers (not sources — ADR-0002)
 sources/*/instances/
 master_ufo/
 instance_ufo/
+master_ttf*/
+master_otf/
+variable_ttf/
+
+# CI / local Pages staging
+_site/
+
+# Font editor backups
+*.ufo.bak
+*.ufoz
+*.glyphs.bak
+
+# OS / editor / local agent config
 .DS_Store
+.vscode/
+.idea/
 .claude/
+.env*
