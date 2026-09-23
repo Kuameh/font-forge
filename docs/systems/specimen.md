@@ -4,7 +4,7 @@ The gallery at `specimen/index.html`. Decision: [ADR-0007](../decisions/0007-the
 
 - `scripts/specimen.py` reads every `fonts/*/family.toml` and that family's variable TTF (axes via `fvar`, character set via `cmap`), then injects a JSON list into `scripts/specimen.template.html`.
 - Per family, the page shows: name, Draft badge when `status = "draft"`, description + designers, an editable type tester, one slider per variable axis plus a size slider, a grid of every encoded character, and download links for every file in `fonts/<slug>/`.
-- Fonts load from `../fonts/<slug>/webfonts/*-VF.woff2` via the `FontFace` API, so the page must be served over HTTP (`make serve` → http://localhost:8000/specimen/) or GitHub Pages from the repo root. Opening it with `file://` blocks the fonts.
+- Fonts load from `../fonts/<slug>/webfonts/*-VF.woff2` via the `FontFace` API, so the page must be served over HTTP (`make serve` → http://localhost:8000/specimen/) or GitHub Pages (https://kuameh.github.io/font-forge/specimen/, deployed by `.github/workflows/pages.yml`). Opening it with `file://` blocks the fonts.
 - UI colours and spacing are CSS custom properties on `:root`, with a dark theme through `prefers-color-scheme`. The UI font is Inter from Google Fonts.
 
 ## Gaps

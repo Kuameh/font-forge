@@ -34,6 +34,8 @@ Then `make build` runs `scripts/specimen.py` ([specimen.md](specimen.md)).
 
 `.github/workflows/build.yml` runs `make setup && make build` on every push and PR, and uploads `fonts/` as an artifact.
 
+`.github/workflows/pages.yml` publishes the committed `fonts/` and `specimen/` (it doesn't rebuild them) to GitHub Pages on every push to `main`: https://kuameh.github.io/font-forge/specimen/
+
 ## Gaps
 
 - Nothing checks that committed `fonts/` match `sources/`. Builds aren't byte-reproducible yet (timestamps), so a diff check would always fail. Fix: pin `SOURCE_DATE_EPOCH` and add a `git diff --exit-code fonts specimen` step.

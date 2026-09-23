@@ -4,6 +4,10 @@ Open-source font families, built from editable sources, with a live specimen.
 
 ## See the fonts
 
+Online: **https://kuameh.github.io/font-forge/specimen/**
+
+Locally:
+
 ```sh
 make setup   # once
 make serve   # then open http://localhost:8000/specimen/
