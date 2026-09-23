@@ -28,6 +28,7 @@ Built fonts are already committed under [`fonts/`](fonts/), so you don't need to
 |---|---|---|
 | [Forge Demo](sources/ForgeDemo/) | Draft (pipeline demo, 9 caps) | wght 300–800 |
 | [Noble Hand](sources/NobleHand/) | Draft (handwriting, A–Z a–z 0–9, basic punctuation) | none (one weight) |
+| [El Display](sources/ElDisplay/) | Draft (unicase display, A–Z 0–9, punctuation, Le/LL/Lo ligatures via `dlig`) | none (one weight) |
 
 ## Build
 
