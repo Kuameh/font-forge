@@ -14,7 +14,7 @@
 
 ## Adding a family
 
-1. Create `sources/<FamilyName>/` with at least two compatible UFO 3 masters, a `<FamilyName>.designspace` (axes, masters, named instances; the default must sit on a master) and `family.toml`. Copy the fields from `sources/ForgeDemo/family.toml`.
+1. Create `sources/<FamilyName>/` with at least two compatible UFO 3 masters, a `<FamilyName>.designspace` (axes, masters, named instances; the default must sit on a master) and `family.toml`. A one-weight family is a single UFO with no designspace instead ([ADR-0008](docs/decisions/0008-single-master-families-ship-static-fonts-only.md)). Copy the fields from `sources/ForgeDemo/family.toml`.
 2. Set in each UFO's font info: family and style name, `unitsPerEm`, vertical metrics, and the OFL licence + URL.
 3. Add yourself to `AUTHORS.txt`, and add the family to the table in `README.md`.
 4. Build, check the specimen, commit.

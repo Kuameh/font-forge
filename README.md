@@ -17,7 +17,7 @@ Built fonts are already committed under [`fonts/`](fonts/), so you don't need to
 
 | Folder | Use it for |
 |---|---|
-| `variable/` | One file with every weight (a slider). Modern apps and the web. |
+| `variable/` | One file with every weight (a slider). Modern apps and the web. Multi-weight families only. |
 | `ttf/` | One hinted file per weight. Windows, Office, older apps. |
 | `otf/` | One file per weight, CFF outlines. Print and design apps. |
 | `webfonts/` | woff2 for `@font-face`. |
@@ -27,6 +27,7 @@ Built fonts are already committed under [`fonts/`](fonts/), so you don't need to
 | Family | Status | Axes |
 |---|---|---|
 | [Forge Demo](sources/ForgeDemo/) | Draft (pipeline demo, 9 caps) | wght 300–800 |
+| [Noble Hand](sources/NobleHand/) | Draft (handwriting, A–Z a–z 0–9, basic punctuation) | none (one weight) |
 
 ## Build
 

@@ -1,0 +1,7 @@
+# Metadata the build and specimen read. The UFO owns outlines and metrics; this file owns everything else.
+name = "Noble Hand"
+slug = "noble-hand"
+status = "draft"            # draft | released — drafts build but are labelled in the specimen
+designers = ["Kaleb Ashiangmor"]
+description = "Monoline handwriting traced from a single sheet: caps, lowercase, figures and basic punctuation. One weight."
+sample = "Noble Hand. The quick brown fox jumps over the lazy dog. 0123456789!"

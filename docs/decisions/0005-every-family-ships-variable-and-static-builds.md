@@ -1,6 +1,6 @@
 # ADR-0005 — Every family ships a variable font and static instances
 
-- **Status**: Accepted
+- **Status**: Superseded in part by [ADR-0008](0008-single-master-families-ship-static-fonts-only.md) (single-master families)
 - **Date**: 2026-09-23
 
 ## Context

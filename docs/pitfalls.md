@@ -11,3 +11,5 @@ Mistakes made (or nearly made) in this repo, and the rule that prevents each. Ad
 | 5 | *(Design rule.)* Outline direction: UFO/PostScript outer contours go counter-clockwise, counters (holes) clockwise. Get it wrong and holes fill in or overlap removal eats shapes. | Keep outer = CCW, inner = CW. Editors' "correct direction" command does this. |
 | 6 | *(Process rule.)* Editing sources without rebuilding leaves `fonts/` and the specimen lying. | Every source change ships with `make build` output in the same commit (ADR-0004). |
 | 7 | *(Process rule.)* Opening `specimen/index.html` directly (file://) shows fallback fonts and looks like a broken build. | Use `make serve`. |
+| 8 | A `sample` in `family.toml` used an em dash and a colon the font doesn't have; the specimen silently drew them in Inter. | Build `sample` only from characters in the font's character grid. |
+| 9 | *(Process rule.)* Plain `make build` rewrites every family's binaries even when their sources didn't change (builds aren't byte-reproducible yet), which makes noisy diffs. | Rebuild only what you changed: `make build FAMILY=<Dir>`. Revert untouched families' `fonts/` before committing. |

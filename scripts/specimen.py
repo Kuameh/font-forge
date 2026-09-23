@@ -16,17 +16,19 @@ OUT = ROOT / "specimen" / "index.html"
 
 def family_data(family_out):
     meta = tomllib.loads((family_out / "family.toml").read_text())
-    [vf] = (family_out / "variable").glob("*.ttf")
+    # Single-master families have no variable font (ADR-0008); preview their first static instead.
+    [vf, *_] = sorted((family_out / "variable").glob("*.ttf")) or sorted((family_out / "ttf").glob("*.ttf"))
     font = TTFont(vf)
     axes = [
         {"tag": a.axisTag, "min": a.minValue, "default": a.defaultValue, "max": a.maxValue}
-        for a in font["fvar"].axes
+        for a in (font["fvar"].axes if "fvar" in font else [])
     ]
     chars = sorted(c for c in font.getBestCmap() if c > 0x20)
     webfont = f"../fonts/{family_out.name}/webfonts/{vf.with_suffix('.woff2').name}"
     downloads = {
         kind: [f"../fonts/{family_out.name}/{kind}/{p.name}" for p in sorted((family_out / kind).glob("*"))]
         for kind in ("variable", "ttf", "otf", "webfonts")
+        if (family_out / kind).is_dir()
     }
     return {**meta, "axes": axes, "chars": "".join(map(chr, chars)), "webfont": webfont, "downloads": downloads}
 
