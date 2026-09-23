@@ -41,14 +41,26 @@
   .dl a { display: block; color: var(--ink); text-decoration: none; padding: var(--space-1) 0; overflow-wrap: anywhere; }
   .dl a:hover { color: var(--accent); }
   .empty { color: var(--muted); }
-  @media (max-width: 600px) { .tester { font-size: 44px; } main { padding-top: var(--space-4); } }
+  .typebar { display: flex; gap: var(--space-2); margin-bottom: var(--space-3); }
+  .typebar input { flex: 1; min-width: 0; min-height: 44px; font: 400 16px var(--ui); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 var(--space-3); }
+  .typebar input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .typebar button { min-height: 44px; font: 500 14px var(--ui); color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: var(--radius); padding: 0 var(--space-3); cursor: pointer; }
+  .typebar button:hover { border-color: var(--ink); }
+  .missing { color: var(--muted); text-decoration: underline dotted var(--accent); text-underline-offset: 0.12em; }
+  .missing-note { color: var(--muted); font-size: 13px; margin: var(--space-2) 0 0; min-height: 1.5em; }
+  .missing-note b { color: var(--accent); font-weight: 500; letter-spacing: 0.08em; }
+  .styles { border-top: 1px solid var(--line); margin-top: var(--space-3); }
+  .styles div { display: grid; grid-template-columns: 110px 1fr; gap: var(--space-3); align-items: baseline; padding: var(--space-2) 0; border-bottom: 1px solid var(--line); }
+  .styles small { color: var(--muted); font-size: 12px; }
+  .styles p { margin: 0; font-size: 32px; line-height: 1.2; overflow-wrap: anywhere; }
+  @media (max-width: 600px) { .tester { font-size: 44px; } .styles div { grid-template-columns: 1fr; gap: 0; } .styles p { font-size: 24px; } main { padding-top: var(--space-4); } }
 </style>
 </head>
 <body>
 <main>
   <header>
     <h1>Font Forge</h1>
-    <p>Every family built from this repository. Type in any specimen to try it.</p>
+    <p>Every family built from this repository. Type in any family to preview your own text.</p>
   </header>
   <div id="families"></div>
 </main>
@@ -64,17 +76,57 @@ for (const f of FAMILIES) {
   el.innerHTML = `
     <div class="head"><h2></h2>${f.status === "draft" ? '<span class="badge">Draft</span>' : ""}</div>
     <p class="desc"></p>
-    <div class="tester" contenteditable="true" spellcheck="false"></div>
+    <div class="typebar">
+      <input type="text" placeholder="Type to preview…" autocomplete="off" spellcheck="false">
+      <button type="button">Reset</button>
+    </div>
+    <div class="tester" aria-live="polite"></div>
+    <p class="missing-note"></p>
     <div class="controls">
       ${f.axes.map(a => `<label>${a.tag}<input type="range" data-axis="${a.tag}" min="${a.min}" max="${a.max}" value="${a.default}" step="1"><output>${a.default}</output></label>`).join("")}
       <label>size<input type="range" data-size min="16" max="160" value="72"><output>72</output></label>
     </div>
-    <div class="glyphs"></div>
+    ${f.instances.length > 1 ? '<details open><summary>Weights</summary><div class="styles"></div></details>' : ""}
+    <details><summary>Character set</summary><div class="glyphs"></div></details>
     <details><summary>Download</summary><div class="dl"></div></details>`;
   el.querySelector("h2").textContent = f.name;
   el.querySelector(".desc").textContent = `${f.description} — ${f.designers.join(", ")}`;
   const tester = el.querySelector(".tester");
-  tester.textContent = f.sample;
+  const note = el.querySelector(".missing-note");
+  const input = el.querySelector(".typebar input");
+  input.setAttribute("aria-label", `Preview text in ${f.name}`);
+  const styles = el.querySelector(".styles");
+  // A single-style family (ADR-0008) is fully shown by the tester, so it gets no Weights list.
+  const lines = !styles ? [] : f.instances.map(inst => {
+    const row = document.createElement("div");
+    const label = document.createElement("small");
+    label.textContent = `${inst.name} · ${Object.values(inst.coords).join(" ")}`;
+    const line = document.createElement("p");
+    line.style.fontFamily = `"${f.slug}", var(--ui)`;
+    line.style.fontVariationSettings = Object.entries(inst.coords).map(([t, v]) => `"${t}" ${v}`).join(", ");
+    row.append(label, line); styles.append(row);
+    return line;
+  });
+  const supported = new Set(f.chars + " ");
+  // Characters the font lacks render in the fallback UI font, marked, so a missing glyph never passes for a design choice.
+  const paint = (node, text) => {
+    node.replaceChildren();
+    for (const ch of text) {
+      if (supported.has(ch)) { node.append(ch); continue; }
+      const m = document.createElement("span"); m.className = "missing"; m.textContent = ch; node.append(m);
+    }
+  };
+  const render = () => {
+    const text = input.value;
+    paint(tester, text || f.sample);
+    for (const line of lines) paint(line, text || f.sample);
+    const missing = [...new Set([...(text || f.sample)].filter(ch => !supported.has(ch)))];
+    note.innerHTML = missing.length ? `Not in this font yet: <b></b>` : "";
+    if (missing.length) note.querySelector("b").textContent = missing.join(" ");
+  };
+  input.addEventListener("input", render);
+  el.querySelector(".typebar button").addEventListener("click", () => { input.value = ""; render(); input.focus(); });
+  render();
   const glyphs = el.querySelector(".glyphs");
   for (const ch of f.chars) { const s = document.createElement("span"); s.textContent = ch; glyphs.append(s); }
   for (const node of [tester, glyphs]) node.style.fontFamily = `"${f.slug}", var(--ui)`;
