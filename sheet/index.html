@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Font Forge Drawing Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style id="page-size">@page { size: A4; margin: 0; }</style>
+<style>
+  /* Guide proportions match the house default metrics (units per em 1000): see docs/systems/drawing-workflow.md. */
+  :root {
+    --bg: #f6f5f1; --surface: #ffffff; --ink: #16150f; --muted: #6b695f; --line: #e2e0d7; --accent: #d9480f;
+    --paper: #ffffff; --paper-ink: #16150f; --guide: #b9b6aa; --guide-soft: #dcd9ce; --baseline: #d9480f;
+    --radius: 12px; --space-1: 4px; --space-2: 8px; --space-3: 16px; --space-4: 24px; --space-5: 48px;
+    --ui: "Inter", system-ui, sans-serif;
+    --cell: 34mm;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #12110d; --surface: #1b1a15; --ink: #f1efe6; --muted: #9a978b; --line: #2e2c25; --accent: #ff7a3d; }
+  }
+  :root[data-theme="dark"] { --bg: #12110d; --surface: #1b1a15; --ink: #f1efe6; --muted: #9a978b; --line: #2e2c25; --accent: #ff7a3d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--ui); }
+  main { max-width: 1080px; margin: 0 auto; padding: var(--space-5) var(--space-3); }
+  h1 { font-size: 28px; font-weight: 600; margin: 0 0 var(--space-1); letter-spacing: -0.01em; }
+  .lede { color: var(--muted); margin: 0 0 var(--space-4); }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: var(--space-4); margin-bottom: var(--space-4); display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .panel label { display: grid; gap: var(--space-1); font-size: 13px; color: var(--muted); }
+  .panel input, .panel textarea, .panel select { font: 400 16px var(--ui); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: var(--space-2) var(--space-3); min-height: 44px; width: 100%; }
+  .panel textarea { resize: vertical; min-height: 88px; }
+  .panel .check { display: flex; align-items: center; gap: var(--space-2); min-height: 44px; }
+  .panel .check input { width: auto; min-height: 0; }
+  .actions { display: flex; gap: var(--space-2); align-items: end; }
+  .actions button { min-height: 44px; font: 500 15px var(--ui); border-radius: 8px; padding: 0 var(--space-4); cursor: pointer; border: 1px solid var(--accent); background: var(--accent); color: var(--surface); }
+  .actions .ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .preview { overflow-x: auto; padding-bottom: var(--space-3); }
+
+  /* The sheet itself: always paper-coloured, on screen and in print. */
+  .sheet { background: var(--paper); color: var(--paper-ink); width: var(--sheet-w, 210mm); margin: 0 auto; padding: 14mm 12mm; position: relative; box-shadow: 0 1px 3px rgb(0 0 0 / 0.15); }
+  .sheet header { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); border-bottom: 0.4mm solid var(--paper-ink); padding-bottom: 2mm; margin-bottom: 3mm; }
+  .sheet header h2 { font-size: 15px; margin: 0; font-weight: 600; }
+  .sheet header p { margin: 0; font-size: 10px; color: var(--muted); }
+  .howto { font-size: 9.5px; line-height: 1.45; color: var(--paper-ink); margin: 0 0 4mm; columns: 2; column-gap: 6mm; }
+  .howto b { font-weight: 600; }
+  .legend { display: flex; flex-wrap: wrap; gap: 2mm 5mm; font-size: 9px; color: var(--muted); margin-bottom: 4mm; }
+  .legend span::before { content: ""; display: inline-block; width: 7mm; vertical-align: middle; margin-right: 1.5mm; border-top: 0.3mm solid var(--guide); }
+  .legend .l-base::before { border-top: 0.6mm solid var(--baseline); }
+  .legend .l-x::before { border-top-style: dashed; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, var(--cell)); gap: 3mm; justify-content: center; }
+  .cell { width: var(--cell); break-inside: avoid; }
+  .cell.wide { grid-column: span 2; width: calc(var(--cell) * 2 + 3mm); }
+  .cell svg { display: block; width: 100%; height: auto; border: 0.25mm solid var(--guide); }
+  .cell .ghost { fill: var(--guide-soft); font-family: var(--ui); }
+  .cell .tag { font-family: var(--ui); font-weight: 600; fill: var(--paper-ink); }
+  .reg { position: absolute; width: 8mm; height: 8mm; }
+  .reg.tl { top: 3mm; left: 3mm; } .reg.tr { top: 3mm; right: 3mm; } .reg.bl { bottom: 3mm; left: 3mm; } .reg.br { bottom: 3mm; right: 3mm; }
+
+  @media print {
+    body { background: var(--paper); }
+    main { padding: 0; max-width: none; }
+    .no-print { display: none !important; }
+    .preview { overflow: visible; padding: 0; }
+    .sheet { box-shadow: none; width: auto; }
+    .reg { position: fixed; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="no-print">
+    <h1>Drawing sheet</h1>
+    <p class="lede">Print this, draw one character per box, then scan or photograph it and hand it to Claude to trace. Because every box has the same guidelines, each letter lands on the right baseline and height automatically.</p>
+    <form class="panel" id="form">
+      <label>Family name<input name="name" placeholder="My Hand" autocomplete="off"></label>
+      <label>Designer<input name="designer" placeholder="Your name" autocomplete="off"></label>
+      <label>Characters (one box each)<textarea name="chars" spellcheck="false"></textarea></label>
+      <label>Ligatures (comma separated, drawn joined)<input name="ligatures" spellcheck="false" autocomplete="off"></label>
+      <label>Paper<select name="paper"><option value="A4">A4</option><option value="letter">US Letter</option></select></label>
+      <label class="check"><input type="checkbox" name="ghost"> Show faint guide letters (they can bias your hand; off by default)</label>
+      <div class="actions"><button type="button" id="print">Print</button><button type="button" class="ghost" id="reset">Reset</button></div>
+    </form>
+  </div>
+  <div class="preview"><div class="sheet" id="sheet"></div></div>
+</main>
+<script>
+// Guide metrics in font units (UPM 1000). Every box is drawn from these; the tracing step maps them 1:1 onto the UFO.
+const METRICS = { ascender: 800, cap: 700, x: 500, baseline: 0, descender: -250 };
+const TOP = 900, BOTTOM = -330, UNIT_W = 1000;   // box extent in font units, with headroom for accents and tails
+const DEFAULTS = {
+  name: "", designer: "", paper: "A4", ghost: false,
+  chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n0123456789\n.,:;!?&'\"()-/@#%+*",
+  ligatures: "ff, fi, fl, ft, tt, th",
+};
+const form = document.getElementById("form");
+const sheet = document.getElementById("sheet");
+const params = new URLSearchParams(location.search);
+for (const [k, v] of Object.entries(DEFAULTS)) {
+  const el = form.elements[k];
+  const value = params.has(k) ? params.get(k) : v;
+  if (el.type === "checkbox") el.checked = value === true || value === "1"; else el.value = value;
+}
+
+const NS = "http://www.w3.org/2000/svg";
+const svgEl = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); return e; };
+// y in font units -> SVG y (SVG grows downward)
+const Y = v => TOP - v;
+
+function cell(label, units, ghost) {
+  const w = UNIT_W * units, h = TOP - BOTTOM;
+  const svg = svgEl("svg", { viewBox: `0 0 ${w} ${h}`, role: "img", "aria-label": `Box for ${label}` });
+  const guide = getComputedStyle(document.documentElement);
+  const line = (v, color, width, dash) => svg.append(svgEl("line", { x1: 0, x2: w, y1: Y(v), y2: Y(v), stroke: color, "stroke-width": width, ...(dash ? { "stroke-dasharray": dash } : {}) }));
+  if (ghost) {
+    const t = svgEl("text", { x: w / 2, y: Y(0), "text-anchor": "middle", "font-size": 1000, class: "ghost" });
+    t.textContent = label; svg.append(t);
+  }
+  line(METRICS.ascender, guide.getPropertyValue("--guide-soft"), 4);
+  line(METRICS.cap, guide.getPropertyValue("--guide"), 5);
+  line(METRICS.x, guide.getPropertyValue("--guide"), 5, "28 18");
+  line(METRICS.descender, guide.getPropertyValue("--guide"), 5);
+  line(METRICS.baseline, guide.getPropertyValue("--baseline"), 10);
+  // Label sits outside the drawing area (above the ascender) so tracing never picks it up.
+  const tag = svgEl("text", { x: 30, y: 70, "font-size": 70, class: "tag" });
+  tag.textContent = label === " " ? "space" : label;
+  svg.append(tag);
+  const div = document.createElement("div");
+  div.className = units > 1 ? "cell wide" : "cell";
+  div.append(svg);
+  return div;
+}
+
+function reg(pos) {
+  const s = svgEl("svg", { viewBox: "0 0 20 20", class: `reg ${pos}` });
+  s.append(svgEl("circle", { cx: 10, cy: 10, r: 7, fill: "none", stroke: "currentColor", "stroke-width": 1 }));
+  s.append(svgEl("path", { d: "M10 0V20M0 10H20", stroke: "currentColor", "stroke-width": 1 }));
+  return s;
+}
+
+function render() {
+  const d = Object.fromEntries(new FormData(form));
+  d.ghost = form.elements.ghost.checked;
+  const chars = [...new Set([...d.chars.replace(/\s/g, "")])];
+  const ligs = d.ligatures.split(",").map(s => s.trim()).filter(Boolean);
+  // @page can't read custom properties, so the size rule is rewritten directly.
+  document.getElementById("page-size").textContent = `@page { size: ${d.paper}; margin: 0; }`;
+  document.documentElement.style.setProperty("--sheet-w", d.paper === "letter" ? "215.9mm" : "210mm");
+  const q = new URLSearchParams({ name: d.name, designer: d.designer, chars: d.chars, ligatures: d.ligatures, paper: d.paper, ...(d.ghost ? { ghost: "1" } : {}) });
+  history.replaceState(null, "", `?${q}`);
+
+  sheet.replaceChildren();
+  sheet.append(reg("tl"), reg("tr"), reg("bl"), reg("br"));
+  const header = document.createElement("header");
+  const h2 = document.createElement("h2");
+  h2.textContent = `${d.name || "Untitled family"} · drawing sheet`;
+  const meta = document.createElement("p");
+  meta.textContent = `${d.designer ? d.designer + " · " : ""}${chars.length} characters, ${ligs.length} ligatures · Font Forge`;
+  header.append(h2, meta);
+  const howto = document.createElement("p");
+  howto.className = "howto";
+  howto.innerHTML = `<b>Pen:</b> black felt-tip or gel, the same pen for every box. <b>Sit</b> every letter on the orange baseline. Capitals reach the cap line; lowercase bodies (a, e, o) reach the dashed x-height; ascenders (b, d, h, k, l) go towards the top line; descenders (g, j, p, q, y) drop to the bottom line. <b>Ligatures</b> are wide boxes: draw the letters joined the way you'd like them to connect. <b>Keep</b> the corner marks visible and don't draw over the labels. <b>Scan</b> at 300 dpi, or photograph straight on in even daylight with the whole page in frame.`;
+  const legend = document.createElement("div");
+  legend.className = "legend";
+  legend.innerHTML = `<span>ascender</span><span>cap height</span><span class="l-x">x-height</span><span class="l-base">baseline</span><span>descender</span>`;
+  const grid = document.createElement("div");
+  grid.className = "grid";
+  for (const ch of chars) grid.append(cell(ch, 1, d.ghost));
+  for (const lig of ligs) grid.append(cell(lig, 2, d.ghost));
+  sheet.append(header, howto, legend, grid);
+}
+
+form.addEventListener("input", render);
+document.getElementById("print").addEventListener("click", () => window.print());
+document.getElementById("reset").addEventListener("click", () => { history.replaceState(null, "", location.pathname); location.reload(); });
+render();
+</script>
+</body>
+</html>

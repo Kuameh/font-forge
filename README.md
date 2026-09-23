@@ -13,6 +13,12 @@ make setup   # once
 make serve   # then open http://localhost:8000/specimen/
 ```
 
+| Page | What it's for |
+|---|---|
+| [Specimen](https://kuameh.github.io/font-forge/specimen/) | Type in any family, try weights and ligatures, download. |
+| [Alignment proof](https://kuameh.github.io/font-forge/specimen/proof.html) | Every glyph on its baseline, x-height and cap lines. Mark OK/Fix, then paste the review to Claude. |
+| [Drawing sheet](https://kuameh.github.io/font-forge/sheet/) | Print, draw one letter per box, scan: the starting point for a new family. |
+
 Built fonts are already committed under [`fonts/`](fonts/), so you don't need to build to use them. Each family has:
 
 | Folder | Use it for |
@@ -42,8 +48,9 @@ make build FAMILY=ForgeDemo    # one family
 ```
 sources/<Family>/   UFO masters + .designspace + family.toml   ← edit these
 fonts/<slug>/       built output, committed                    ← generated
-specimen/           generated gallery                          ← generated
-scripts/            build.py, specimen.py, specimen template
+specimen/           gallery + alignment proof                  ← generated
+scripts/            build.py, specimen.py, proof.py + their templates
+sheet/              printable drawing sheet (static)
 docs/               decisions (ADRs), systems, pitfalls
 ```
 
