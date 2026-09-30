@@ -21,7 +21,7 @@ jobs:
       # Publishes the committed fonts/ and specimen/ as-is (ADR-0004, ADR-0007).
       - run: |
           mkdir _site
-          cp -R fonts specimen _site/
+          cp -R fonts specimen sheet _site/
           echo '<meta http-equiv="refresh" content="0; url=specimen/">' > _site/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

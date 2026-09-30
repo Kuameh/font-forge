@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Font Forge Alignment Proof</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f5f1; --surface: #ffffff; --ink: #16150f; --muted: #6b695f; --line: #e2e0d7; --accent: #d9480f;
+    --guide: #b9b6aa; --ok: #2f7d4f; --fix: #d9480f;
+    --radius: 12px; --space-1: 4px; --space-2: 8px; --space-3: 16px; --space-4: 24px; --space-5: 48px;
+    --ui: "Inter", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #12110d; --surface: #1b1a15; --ink: #f1efe6; --muted: #9a978b; --line: #2e2c25; --accent: #ff7a3d; --guide: #5b584e; --ok: #5fbf85; --fix: #ff7a3d; }
+  }
+  :root[data-theme="dark"] { --bg: #12110d; --surface: #1b1a15; --ink: #f1efe6; --muted: #9a978b; --line: #2e2c25; --accent: #ff7a3d; --guide: #5b584e; --ok: #5fbf85; --fix: #ff7a3d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--ui); }
+  main { max-width: 1180px; margin: 0 auto; padding: var(--space-5) var(--space-3); }
+  h1 { font-size: 28px; font-weight: 600; margin: 0 0 var(--space-1); letter-spacing: -0.01em; }
+  h2 { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: var(--space-4) 0 var(--space-2); }
+  .lede { color: var(--muted); margin: 0 0 var(--space-4); max-width: 70ch; }
+  .lede a { color: var(--ink); }
+  .bar { position: sticky; top: 0; z-index: 1; background: var(--bg); border-bottom: 1px solid var(--line); padding: var(--space-3) 0; display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); align-items: center; }
+  .bar select, .bar input[type=text] { font: 400 16px var(--ui); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 0 var(--space-3); min-height: 44px; }
+  .bar label { display: flex; align-items: center; gap: var(--space-2); color: var(--muted); font-size: 13px; min-height: 44px; }
+  .bar .count { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .bar .count b { color: var(--ink); font-weight: 600; }
+  .bar .spacer { flex: 1; }
+  button { font: 500 14px var(--ui); min-height: 44px; border-radius: 8px; padding: 0 var(--space-3); cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--ink); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+  .strip { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: var(--space-3); overflow-x: auto; }
+  .strip svg { display: block; height: 120px; width: auto; max-width: none; }
+  .strip + .strip { margin-top: var(--space-2); }
+  .words { display: flex; gap: var(--space-2); margin-bottom: var(--space-2); }
+  .words input { flex: 1; min-width: 0; font: 400 16px var(--ui); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 0 var(--space-3); min-height: 44px; }
+  .grid { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: var(--space-2); display: grid; gap: var(--space-1); align-content: start; }
+  .card[data-status=ok] { border-color: var(--ok); }
+  .card[data-status=fix] { border-color: var(--fix); box-shadow: inset 0 0 0 1px var(--fix); }
+  .card header { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-1); font-size: 12px; }
+  .card header b { font-weight: 600; font-size: 14px; }
+  .card header span { color: var(--muted); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; text-align: right; }
+  .card { flex: 0 0 auto; min-width: 150px; }
+  .card svg { height: 150px; display: block; margin: 0 auto; }
+  .card .actions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-1); }
+  .card .actions button { min-height: 36px; font-size: 13px; }
+  .card[data-status=ok] .ok { background: var(--ok); border-color: var(--ok); color: var(--surface); }
+  .card[data-status=fix] .fix { background: var(--fix); border-color: var(--fix); color: var(--surface); }
+  .card textarea { display: none; font: 400 16px var(--ui); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: var(--space-1) var(--space-2); resize: vertical; min-height: 60px; }
+  .card[data-status=fix] textarea { display: block; }
+  svg .glyph { fill: var(--ink); }
+  svg .m { stroke: var(--guide); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  svg .m.base { stroke: var(--accent); stroke-width: 2; }
+  svg .m.x { stroke-dasharray: 4 3; }
+  svg .sb { stroke: var(--muted); stroke-dasharray: 2 3; stroke-width: 1; vector-effect: non-scaling-stroke; }
+  svg .box { fill: var(--accent); opacity: 0.06; }
+  body.no-metrics svg .m, body.no-bearings svg .sb, body.no-bearings svg .box { display: none; }
+  svg text { font: 500 11px var(--ui); fill: var(--muted); }
+  dialog { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); color: var(--ink); max-width: min(640px, 92vw); width: 100%; }
+  dialog textarea { width: 100%; min-height: 240px; font: 400 14px/1.5 ui-monospace, monospace; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: var(--space-2); }
+  dialog .row { display: flex; justify-content: flex-end; gap: var(--space-2); margin-top: var(--space-2); }
+  .legend { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); font-size: 12px; color: var(--muted); margin-top: var(--space-2); }
+  .legend span::before { content: ""; display: inline-block; width: 24px; vertical-align: middle; margin-right: 6px; border-top: 1px solid var(--guide); }
+  .legend .base::before { border-top: 2px solid var(--accent); }
+  .legend .x::before { border-top-style: dashed; }
+  .legend .sb::before { width: 0; height: 12px; border-top: 0; border-left: 1px dashed var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Alignment proof</h1>
+  <p class="lede">Every glyph drawn on its metric lines: baseline (orange), x-height (dashed), cap height, ascender and descender. The dotted verticals are the glyph's side bearings. Mark each one <b>OK</b> or <b>Fix</b> with a note, then <b>Copy review</b> and paste it to Claude. Marks are kept in this browser only. New letters start from the <a href="../sheet/">drawing sheet</a>; to try your own text, use the <a href="./">specimen</a>.</p>
+  <div class="bar">
+    <select id="family" aria-label="Family"></select>
+    <select id="style" aria-label="Style"></select>
+    <label><input type="checkbox" id="metrics" checked> Metric lines</label>
+    <label><input type="checkbox" id="bearings" checked> Side bearings</label>
+    <select id="filter" aria-label="Show"><option value="all">All glyphs</option><option value="todo">Not reviewed</option><option value="fix">Marked Fix</option><option value="ok">Marked OK</option></select>
+    <span class="spacer"></span>
+    <span class="count" id="count"></span>
+    <button class="primary" id="copy">Copy review</button>
+  </div>
+  <div class="legend"><span class="base">baseline</span><span class="x">x-height</span><span>cap · ascender · descender</span><span class="sb">side bearings</span></div>
+
+  <h2>Spacing</h2>
+  <div class="words"><input id="words" type="text" placeholder="Type words to check spacing…" spellcheck="false" autocomplete="off" aria-label="Words to proof"><button id="words-reset">Reset</button></div>
+  <div id="strips"></div>
+
+  <h2>Glyphs</h2>
+  <div class="grid" id="grid"></div>
+</main>
+<dialog id="dialog">
+  <p id="dialog-title">Paste this to Claude:</p>
+  <textarea id="review" readonly></textarea>
+  <div class="row"><button id="close">Close</button></div>
+</dialog>
+<script>
+const FAMILIES = /*FAMILIES*/[];
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const svgEl = (tag, attrs = {}) => { const e = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); return e; };
+const store = {
+  get(key) { try { return JSON.parse(localStorage.getItem(key)) || {}; } catch { return {}; } },
+  set(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} },
+};
+let family, style, marks, key;
+
+for (const [i, f] of FAMILIES.entries()) $("family").append(new Option(f.name, i));
+
+function label(g) {
+  if (g.char) return g.char === " " ? "space" : g.char;
+  // Ligature glyphs are named by their components (f_f, T_T), per the AGL convention.
+  return g.name.includes("_") ? g.name.split("_").join("") : g.name;
+}
+
+// One SVG with metric lines spanning the drawing; glyph y-up space is flipped with a transform.
+function frame(width, m, pad, draw) {
+  const top = Math.max(m.ascender, m.cap) + pad, bottom = m.descender - pad;
+  const svg = svgEl("svg", { viewBox: `${-pad} 0 ${width + 2 * pad} ${top - bottom}`, preserveAspectRatio: "xMidYMid meet" });
+  const g = svgEl("g", { transform: `translate(0 ${top}) scale(1 -1)` });
+  for (const [k, cls] of [["ascender", ""], ["cap", ""], ["x", "x"], ["descender", ""], ["baseline", "base"]]) {
+    g.append(svgEl("line", { x1: -pad, x2: width + pad, y1: m[k], y2: m[k], class: `m ${cls}` }));
+  }
+  draw(g, top, bottom);
+  svg.append(g);
+  return svg;
+}
+
+function card(g) {
+  const m = style.metrics;
+  const el = document.createElement("article");
+  el.className = "card";
+  const status = marks[g.name]?.status;
+  if (status) el.dataset.status = status;
+  const head = document.createElement("header");
+  const b = document.createElement("b"); b.textContent = label(g);
+  const meta = document.createElement("span");
+  meta.textContent = g.bounds ? `${g.name} · ${g.advance} · L${g.bounds[0]} R${g.advance - g.bounds[2]}` : `${g.name} · ${g.advance}`;
+  head.append(b, meta);
+  const svg = frame(g.advance, m, 120, (grp, top, bottom) => {
+    grp.append(svgEl("rect", { x: 0, y: bottom, width: g.advance, height: top - bottom, class: "box" }));
+    grp.append(svgEl("line", { x1: 0, x2: 0, y1: bottom, y2: top, class: "sb" }));
+    grp.append(svgEl("line", { x1: g.advance, x2: g.advance, y1: bottom, y2: top, class: "sb" }));
+    grp.append(svgEl("path", { d: g.d, class: "glyph" }));
+  });
+  // Fixed height, width from the glyph's own extent: every glyph shares one scale, however wide.
+  const vb = svg.viewBox.baseVal;
+  svg.style.width = `${(150 * vb.width) / vb.height}px`;
+  el.style.width = `max(150px, ${(150 * vb.width) / vb.height + 16}px)`;
+  svg.setAttribute("role", "img");
+  svg.setAttribute("aria-label", `${label(g)} on metric lines`);
+  const actions = document.createElement("div");
+  actions.className = "actions";
+  const ok = document.createElement("button"); ok.className = "ok"; ok.textContent = "OK";
+  const fix = document.createElement("button"); fix.className = "fix"; fix.textContent = "Fix";
+  actions.append(ok, fix);
+  const note = document.createElement("textarea");
+  note.placeholder = "What's off? e.g. sits too low, too wide";
+  note.value = marks[g.name]?.note || "";
+  const set = s => {
+    const next = el.dataset.status === s ? undefined : s;   // clicking the active mark clears it
+    if (next) { el.dataset.status = next; marks[g.name] = { status: next, note: note.value }; }
+    else { delete el.dataset.status; delete marks[g.name]; }
+    store.set(key, marks); count();
+    if (next === "fix") note.focus();
+  };
+  ok.onclick = () => set("ok");
+  fix.onclick = () => set("fix");
+  note.oninput = () => { if (marks[g.name]) { marks[g.name].note = note.value; store.set(key, marks); } };
+  el.append(head, svg, actions, note);
+  return el;
+}
+
+function strip(text) {
+  const m = style.metrics;
+  const byChar = new Map(style.glyphs.filter(g => g.char).map(g => [g.char, g]));
+  let x = 0;
+  const placed = [];
+  for (const ch of text) {
+    const g = byChar.get(ch);
+    if (!g) continue;           // the specimen marks missing characters; the proof shows only real glyphs
+    placed.push([g, x]); x += g.advance;
+  }
+  const div = document.createElement("div");
+  div.className = "strip";
+  div.append(frame(Math.max(x, 1), m, 60, grp => {
+    for (const [g, gx] of placed) {
+      grp.append(svgEl("line", { x1: gx, x2: gx, y1: m.descender, y2: Math.max(m.ascender, m.cap), class: "sb" }));
+      grp.append(svgEl("path", { d: g.d, class: "glyph", transform: `translate(${gx} 0)` }));
+    }
+  }));
+  return div;
+}
+
+function defaultStrips() {
+  const has = ch => style.glyphs.some(g => g.char === ch);
+  const lines = [];
+  if (has("H") && has("O")) lines.push("HHOHHOOHOOHOHO");
+  if (has("n") && has("o")) lines.push("nnonnoonoonono");
+  const caps = style.glyphs.filter(g => g.char && /[A-Z]/.test(g.char)).map(g => g.char);
+  const lower = style.glyphs.filter(g => g.char && /[a-z]/.test(g.char)).map(g => g.char);
+  if (has("H")) lines.push(caps.map(c => `HH${c}HH`).join(" "));
+  if (has("n")) lines.push(lower.map(c => `nn${c}nn`).join(" "));
+  return lines;
+}
+
+function renderStrips() {
+  const custom = $("words").value;
+  $("strips").replaceChildren(...(custom ? [custom] : defaultStrips()).map(strip));
+}
+
+function count() {
+  const all = style.glyphs.length;
+  const vals = Object.values(marks);
+  const ok = vals.filter(v => v.status === "ok").length, fix = vals.filter(v => v.status === "fix").length;
+  $("count").innerHTML = `<b>${ok}</b> OK · <b>${fix}</b> Fix · <b>${all - ok - fix}</b> not reviewed`;
+}
+
+function renderGrid() {
+  const filter = $("filter").value;
+  const shown = style.glyphs.filter(g => {
+    const s = marks[g.name]?.status;
+    return filter === "all" || (filter === "todo" ? !s : s === filter);
+  });
+  $("grid").replaceChildren(...shown.map(card));
+}
+
+function selectStyle() {
+  style = family.styles[$("style").value];
+  key = `proof:${family.slug}:${style.style}`;
+  marks = store.get(key);
+  count(); renderStrips(); renderGrid();
+}
+
+function selectFamily() {
+  family = FAMILIES[$("family").value];
+  $("style").replaceChildren(...family.styles.map((s, i) => new Option(`${s.style} · ${s.weight}`, i)));
+  $("style").hidden = family.styles.length < 2;
+  selectStyle();
+}
+
+$("family").onchange = selectFamily;
+$("style").onchange = selectStyle;
+$("filter").onchange = renderGrid;
+$("words").oninput = renderStrips;
+$("words-reset").onclick = () => { $("words").value = ""; renderStrips(); };
+$("metrics").onchange = e => document.body.classList.toggle("no-metrics", !e.target.checked);
+$("bearings").onchange = e => document.body.classList.toggle("no-bearings", !e.target.checked);
+$("copy").onclick = async () => {
+  const fixes = style.glyphs.filter(g => marks[g.name]?.status === "fix");
+  const oks = style.glyphs.filter(g => marks[g.name]?.status === "ok");
+  const todo = style.glyphs.filter(g => !marks[g.name]);
+  const text = [
+    `Alignment proof review: ${family.name} ${style.style} (${new Date().toISOString().slice(0, 10)})`,
+    "",
+    `Fix (${fixes.length}):`,
+    ...fixes.map(g => `- ${label(g)} [${g.name}]: ${marks[g.name].note || "(no note)"}`),
+    "",
+    `OK (${oks.length}): ${oks.map(label).join(" ")}`,
+    `Not reviewed (${todo.length}): ${todo.map(label).join(" ")}`,
+  ].join("\n");
+  $("review").value = text;
+  let copied = false;
+  try { await navigator.clipboard.writeText(text); copied = true; } catch {}
+  $("dialog-title").textContent = copied ? "Copied to your clipboard. Paste it to Claude:" : "Copy this and paste it to Claude:";
+  $("dialog").showModal(); $("review").select();
+};
+$("close").onclick = () => $("dialog").close();
+if (FAMILIES.length) selectFamily(); else $("grid").textContent = "No built fonts yet. Run make build.";
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# Metadata the build and specimen read. The UFO owns outlines, metrics and features; this file owns everything else.
+name = "El Display"
+slug = "el-display"
+status = "draft"            # draft | released — drafts build but are labelled in the specimen
+designers = ["Kaleb Ashiangmor"]
+description = "Chunky unicase display face traced from a single sheet, with nested L ligatures (Le, LL, Lo) under discretionary ligatures. One weight."
+sample = "HELLO, WORLD! Blue lemons... 1234567890 (really??)"

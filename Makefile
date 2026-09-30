@@ -10,11 +10,13 @@ setup:  ## Create .venv and install the pinned toolchain
 build:  ## Build every family, or one: make build FAMILY=ForgeDemo
 	$(PY) scripts/build.py $(FAMILY)
 	$(PY) scripts/specimen.py
+	$(PY) scripts/proof.py
 
-specimen:  ## Regenerate specimen/index.html from fonts/
+specimen:  ## Regenerate specimen/index.html and specimen/proof.html from fonts/
 	$(PY) scripts/specimen.py
+	$(PY) scripts/proof.py
 
-serve:  ## Open the specimen at http://localhost:8000/specimen/
+serve:  ## Specimen, proof and drawing sheet at http://localhost:8000/specimen/, /specimen/proof.html, /sheet/
 	$(PY) -m http.server 8000
 
 clean:  ## Remove build leftovers (not fonts/)

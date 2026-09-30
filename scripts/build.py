@@ -16,24 +16,29 @@ SOURCES = ROOT / "sources"
 FONTS = ROOT / "fonts"
 
 
-def fontmake(designspace, out_dir, *args):
+def fontmake(source, out_dir, *args):
     out_dir.mkdir(parents=True, exist_ok=True)
+    flag = "-m" if source.suffix == ".designspace" else "-u"
     subprocess.run(
-        [sys.executable, "-m", "fontmake", "-m", str(designspace), "--output-dir", str(out_dir), *args],
+        [sys.executable, "-m", "fontmake", flag, str(source), "--output-dir", str(out_dir), *args],
         check=True,
     )
 
 
 def build_family(family_dir):
     meta = tomllib.loads((family_dir / "family.toml").read_text())
-    [designspace] = family_dir.glob("*.designspace")
+    # A designspace means masters + a variable font; a lone UFO is a single-master family (ADR-0008).
+    [source] = list(family_dir.glob("*.designspace")) or list(family_dir.glob("*.ufo"))
     out = FONTS / meta["slug"]
     shutil.rmtree(out, ignore_errors=True)
     print(f"==> {meta['name']} -> {out.relative_to(ROOT)}")
 
-    fontmake(designspace, out / "variable", "-o", "variable")
-    fontmake(designspace, out / "ttf", "-i", "-o", "ttf", "--autohint")
-    fontmake(designspace, out / "otf", "-i", "-o", "otf")
+    variable = source.suffix == ".designspace"
+    if variable:
+        fontmake(source, out / "variable", "-o", "variable")
+    instances = ["-i"] if variable else []  # interpolate named instances; a lone UFO is its own static
+    fontmake(source, out / "ttf", *instances, "-o", "ttf", "--autohint")
+    fontmake(source, out / "otf", *instances, "-o", "otf")
 
     webfonts = out / "webfonts"
     webfonts.mkdir()

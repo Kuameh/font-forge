@@ -1,0 +1,14 @@
+languagesystem DFLT dflt;
+languagesystem latn dflt;
+
+# Nested L ligatures, off by default: the face is unicase, so any case forms them.
+feature dlig {
+    sub [L l] [e E] by L_e;
+    sub [L l] [L l] by L_L;
+    sub [L l] [o O] by L_o;
+} dlig;
+
+# Runs of ? alternate between the two drawn question marks.
+feature calt {
+    sub question question' by question.alt;
+} calt;

@@ -31,6 +31,12 @@
   .controls { display: flex; flex-wrap: wrap; gap: var(--space-4); padding: var(--space-3) 0; color: var(--muted); font-size: 13px; }
   .controls label { display: flex; align-items: center; gap: var(--space-2); min-height: 44px; }
   .controls input[type=range] { width: 180px; accent-color: var(--accent); }
+  .controls .feature { gap: var(--space-2); }
+  .controls .feature input { width: 18px; height: 18px; accent-color: var(--accent); }
+  .ligs { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: var(--space-2); margin: var(--space-3) 0; }
+  .ligs figure { margin: 0; border: 1px solid var(--line); border-radius: 8px; padding: var(--space-2); display: grid; gap: var(--space-1); justify-items: center; }
+  .ligs .glyph { font-size: 48px; line-height: 1.2; }
+  .ligs figcaption { font-size: 12px; color: var(--muted); text-align: center; }
   .controls output { color: var(--ink); font-variant-numeric: tabular-nums; min-width: 3ch; }
   .glyphs { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 1px; border-radius: 8px; overflow: hidden; padding: 1px; margin: var(--space-3) 0; }
   .glyphs span { background: var(--surface); box-shadow: 0 0 0 1px var(--line); aspect-ratio: 1; display: grid; place-items: center; font-size: 32px; }
@@ -41,19 +47,34 @@
   .dl a { display: block; color: var(--ink); text-decoration: none; padding: var(--space-1) 0; overflow-wrap: anywhere; }
   .dl a:hover { color: var(--accent); }
   .empty { color: var(--muted); }
-  @media (max-width: 600px) { .tester { font-size: 44px; } main { padding-top: var(--space-4); } }
+  .typebar { display: flex; gap: var(--space-2); margin-bottom: var(--space-3); }
+  .typebar input { flex: 1; min-width: 0; min-height: 44px; font: 400 16px var(--ui); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 var(--space-3); }
+  .typebar input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .typebar button { min-height: 44px; font: 500 14px var(--ui); color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: var(--radius); padding: 0 var(--space-3); cursor: pointer; }
+  .typebar button:hover { border-color: var(--ink); }
+  .missing { color: var(--muted); text-decoration: underline dotted var(--accent); text-underline-offset: 0.12em; }
+  .missing-note { color: var(--muted); font-size: 13px; margin: var(--space-2) 0 0; min-height: 1.5em; }
+  .missing-note b { color: var(--accent); font-weight: 500; letter-spacing: 0.08em; }
+  .styles { border-top: 1px solid var(--line); margin-top: var(--space-3); }
+  .styles div { display: grid; grid-template-columns: 110px 1fr; gap: var(--space-3); align-items: baseline; padding: var(--space-2) 0; border-bottom: 1px solid var(--line); }
+  .styles small { color: var(--muted); font-size: 12px; }
+  .styles p { margin: 0; font-size: 32px; line-height: 1.2; overflow-wrap: anywhere; }
+  @media (max-width: 600px) { .tester { font-size: 44px; } .styles div { grid-template-columns: 1fr; gap: 0; } .styles p { font-size: 24px; } main { padding-top: var(--space-4); } }
 </style>
 </head>
 <body>
 <main>
   <header>
     <h1>Font Forge</h1>
-    <p>Every family built from this repository. Type in any specimen to try it.</p>
+    <p>Every family built from this repository. Type in any family to preview your own text.</p>
   </header>
   <div id="families"></div>
 </main>
 <script>
-const FAMILIES = [{"name": "Forge Demo", "slug": "forge-demo", "status": "draft", "designers": ["Kaleb Ashiangmor"], "description": "Geometric monoline caps used to prove the pipeline end to end: two masters, one weight axis.", "sample": "FONT INFO. TONE. HELLO.", "axes": [{"tag": "wght", "min": 300.0, "default": 300.0, "max": 800.0}], "chars": ".EFHILNOT", "webfont": "../fonts/forge-demo/webfonts/ForgeDemo-VF.woff2", "downloads": {"variable": ["../fonts/forge-demo/variable/ForgeDemo-VF.ttf"], "ttf": ["../fonts/forge-demo/ttf/ForgeDemo-Bold.ttf", "../fonts/forge-demo/ttf/ForgeDemo-ExtraBold.ttf", "../fonts/forge-demo/ttf/ForgeDemo-Light.ttf", "../fonts/forge-demo/ttf/ForgeDemo-Medium.ttf", "../fonts/forge-demo/ttf/ForgeDemo-Regular.ttf", "../fonts/forge-demo/ttf/ForgeDemo-SemiBold.ttf"], "otf": ["../fonts/forge-demo/otf/ForgeDemo-Bold.otf", "../fonts/forge-demo/otf/ForgeDemo-ExtraBold.otf", "../fonts/forge-demo/otf/ForgeDemo-Light.otf", "../fonts/forge-demo/otf/ForgeDemo-Medium.otf", "../fonts/forge-demo/otf/ForgeDemo-Regular.otf", "../fonts/forge-demo/otf/ForgeDemo-SemiBold.otf"], "webfonts": ["../fonts/forge-demo/webfonts/ForgeDemo-Bold.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-ExtraBold.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-Light.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-Medium.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-Regular.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-SemiBold.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-VF.woff2"]}}];
+const FAMILIES = [{"name": "El Display", "slug": "el-display", "status": "draft", "designers": ["Kaleb Ashiangmor"], "description": "Chunky unicase display face traced from a single sheet, with nested L ligatures (Le, LL, Lo) under discretionary ligatures. One weight.", "sample": "HELLO, WORLD! Blue lemons... 1234567890 (really??)", "axes": [], "instances": [{"name": "Regular", "coords": {}}], "features": [{"tag": "calt", "ligatures": []}, {"tag": "dlig", "ligatures": [{"text": "Le", "glyph": "L_e"}, {"text": "LL", "glyph": "L_L"}, {"text": "Lo", "glyph": "L_o"}]}], "chars": "!#$&()*+,-./0123456789:;<>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_abcdefghijklmnopqrstuvwxyz{}«»–‘’‚“”„…‹›", "webfont": "../fonts/el-display/webfonts/ElDisplay-Regular.woff2?v=376d2bc92e", "downloads": {"ttf": ["../fonts/el-display/ttf/ElDisplay-Regular.ttf"], "otf": ["../fonts/el-display/otf/ElDisplay-Regular.otf"], "webfonts": ["../fonts/el-display/webfonts/ElDisplay-Regular.woff2"]}}, {"name": "Forge Demo", "slug": "forge-demo", "status": "draft", "designers": ["Kaleb Ashiangmor"], "description": "Geometric monoline caps used to prove the pipeline end to end: two masters, one weight axis.", "sample": "FONT INFO. TONE. HELLO.", "axes": [{"tag": "wght", "min": 300.0, "default": 300.0, "max": 800.0}], "instances": [{"name": "Light", "coords": {"wght": 300.0}}, {"name": "Regular", "coords": {"wght": 400.0}}, {"name": "Medium", "coords": {"wght": 500.0}}, {"name": "SemiBold", "coords": {"wght": 600.0}}, {"name": "Bold", "coords": {"wght": 700.0}}, {"name": "ExtraBold", "coords": {"wght": 800.0}}], "features": [{"tag": "liga", "ligatures": [{"text": "FF", "glyph": "F_F"}, {"text": "LT", "glyph": "L_T"}, {"text": "TT", "glyph": "T_T"}]}], "chars": ".EFHILNOT", "webfont": "../fonts/forge-demo/webfonts/ForgeDemo-VF.woff2?v=afa771ded9", "downloads": {"variable": ["../fonts/forge-demo/variable/ForgeDemo-VF.ttf"], "ttf": ["../fonts/forge-demo/ttf/ForgeDemo-Bold.ttf", "../fonts/forge-demo/ttf/ForgeDemo-ExtraBold.ttf", "../fonts/forge-demo/ttf/ForgeDemo-Light.ttf", "../fonts/forge-demo/ttf/ForgeDemo-Medium.ttf", "../fonts/forge-demo/ttf/ForgeDemo-Regular.ttf", "../fonts/forge-demo/ttf/ForgeDemo-SemiBold.ttf"], "otf": ["../fonts/forge-demo/otf/ForgeDemo-Bold.otf", "../fonts/forge-demo/otf/ForgeDemo-ExtraBold.otf", "../fonts/forge-demo/otf/ForgeDemo-Light.otf", "../fonts/forge-demo/otf/ForgeDemo-Medium.otf", "../fonts/forge-demo/otf/ForgeDemo-Regular.otf", "../fonts/forge-demo/otf/ForgeDemo-SemiBold.otf"], "webfonts": ["../fonts/forge-demo/webfonts/ForgeDemo-Bold.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-ExtraBold.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-Light.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-Medium.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-Regular.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-SemiBold.woff2", "../fonts/forge-demo/webfonts/ForgeDemo-VF.woff2"]}}, {"name": "Noble Hand", "slug": "noble-hand", "status": "draft", "designers": ["Kaleb Ashiangmor"], "description": "Monoline handwriting traced from a single sheet: caps, lowercase, figures and basic punctuation. One weight.", "sample": "Noble Hand. The quick brown fox jumps over the lazy dog. 0123456789!", "axes": [], "instances": [{"name": "Regular", "coords": {}}], "features": [{"tag": "liga", "ligatures": [{"text": "ff", "glyph": "f_f"}, {"text": "ft", "glyph": "f_t"}, {"text": "tt", "glyph": "t_t"}]}], "chars": "!\"#$%&'()*+,-./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", "webfont": "../fonts/noble-hand/webfonts/NobleHand-Regular.woff2?v=40eecbaf2b", "downloads": {"ttf": ["../fonts/noble-hand/ttf/NobleHand-Regular.ttf"], "otf": ["../fonts/noble-hand/otf/NobleHand-Regular.otf"], "webfonts": ["../fonts/noble-hand/webfonts/NobleHand-Regular.woff2"]}}];
+// Features browsers apply unless told otherwise; everything else (dlig, ss01…) starts off, as in apps.
+const DEFAULT_ON = new Set(["liga", "clig", "calt", "kern", "ccmp", "locl", "mark", "mkmk", "rlig"]);
+const FEATURE_NAMES = { liga: "Standard ligatures", dlig: "Discretionary ligatures", clig: "Contextual ligatures", calt: "Contextual alternates", salt: "Stylistic alternates", swsh: "Swashes", kern: "Kerning" };
 const root = document.getElementById("families");
 if (!FAMILIES.length) root.innerHTML = '<p class="empty">No built fonts yet. Run <code>make build</code>.</p>';
 for (const f of FAMILIES) {
@@ -64,26 +85,84 @@ for (const f of FAMILIES) {
   el.innerHTML = `
     <div class="head"><h2></h2>${f.status === "draft" ? '<span class="badge">Draft</span>' : ""}</div>
     <p class="desc"></p>
-    <div class="tester" contenteditable="true" spellcheck="false"></div>
+    <div class="typebar">
+      <input type="text" placeholder="Type to preview…" autocomplete="off" spellcheck="false">
+      <button type="button">Reset</button>
+    </div>
+    <div class="tester" aria-live="polite"></div>
+    <p class="missing-note"></p>
     <div class="controls">
       ${f.axes.map(a => `<label>${a.tag}<input type="range" data-axis="${a.tag}" min="${a.min}" max="${a.max}" value="${a.default}" step="1"><output>${a.default}</output></label>`).join("")}
       <label>size<input type="range" data-size min="16" max="160" value="72"><output>72</output></label>
+      ${f.features.map(ft => `<label class="feature" title="OpenType feature ${ft.tag}"><input type="checkbox" data-feature="${ft.tag}" ${DEFAULT_ON.has(ft.tag) ? "checked" : ""}>${FEATURE_NAMES[ft.tag] || ft.tag}</label>`).join("")}
     </div>
-    <div class="glyphs"></div>
+    ${f.instances.length > 1 ? '<details open><summary>Weights</summary><div class="styles"></div></details>' : ""}
+    ${f.features.some(ft => ft.ligatures.length) ? '<details open><summary>Ligatures</summary><div class="ligs"></div></details>' : ""}
+    <details><summary>Character set</summary><div class="glyphs"></div></details>
     <details><summary>Download</summary><div class="dl"></div></details>`;
   el.querySelector("h2").textContent = f.name;
   el.querySelector(".desc").textContent = `${f.description} — ${f.designers.join(", ")}`;
   const tester = el.querySelector(".tester");
-  tester.textContent = f.sample;
+  const note = el.querySelector(".missing-note");
+  const input = el.querySelector(".typebar input");
+  input.setAttribute("aria-label", `Preview text in ${f.name}`);
+  const styles = el.querySelector(".styles");
+  // A single-style family (ADR-0008) is fully shown by the tester, so it gets no Weights list.
+  const lines = !styles ? [] : f.instances.map(inst => {
+    const row = document.createElement("div");
+    const label = document.createElement("small");
+    label.textContent = `${inst.name} · ${Object.values(inst.coords).join(" ")}`;
+    const line = document.createElement("p");
+    line.style.fontFamily = `"${f.slug}", var(--ui)`;
+    line.style.fontVariationSettings = Object.entries(inst.coords).map(([t, v]) => `"${t}" ${v}`).join(", ");
+    row.append(label, line); styles.append(row);
+    return line;
+  });
+  const supported = new Set(f.chars + " ");
+  // Characters the font lacks render in the fallback UI font, marked, so a missing glyph never passes for a design choice.
+  // Supported runs stay one text node, so ligatures and contextual rules can form across them.
+  const paint = (node, text) => {
+    node.replaceChildren();
+    let run = "";
+    for (const ch of text) {
+      if (supported.has(ch)) { run += ch; continue; }
+      if (run) { node.append(run); run = ""; }
+      const m = document.createElement("span"); m.className = "missing"; m.textContent = ch; node.append(m);
+    }
+    if (run) node.append(run);
+  };
+  const render = () => {
+    const text = input.value;
+    paint(tester, text || f.sample);
+    for (const line of lines) paint(line, text || f.sample);
+    const missing = [...new Set([...(text || f.sample)].filter(ch => !supported.has(ch)))];
+    note.innerHTML = missing.length ? `Not in this font yet: <b></b>` : "";
+    if (missing.length) note.querySelector("b").textContent = missing.join(" ");
+  };
+  input.addEventListener("input", render);
+  el.querySelector(".typebar button").addEventListener("click", () => { input.value = ""; render(); input.focus(); });
+  render();
   const glyphs = el.querySelector(".glyphs");
   for (const ch of f.chars) { const s = document.createElement("span"); s.textContent = ch; glyphs.append(s); }
   for (const node of [tester, glyphs]) node.style.fontFamily = `"${f.slug}", var(--ui)`;
+  const ligs = el.querySelector(".ligs");
+  for (const ft of f.features) for (const lig of ft.ligatures) {
+    const fig = document.createElement("figure");
+    const g = document.createElement("span"); g.className = "glyph"; g.textContent = lig.text;
+    g.style.fontFamily = `"${f.slug}", var(--ui)`;
+    g.style.fontFeatureSettings = `"${ft.tag}" 1`;   // always shown formed, whatever the toggle says
+    const cap = document.createElement("figcaption"); cap.textContent = `${[...lig.text].join(" + ")} · ${ft.tag}`;
+    fig.append(g, cap); ligs.append(fig);
+  }
   const apply = () => {
     const settings = [...el.querySelectorAll("[data-axis]")].map(i => `"${i.dataset.axis}" ${i.value}`).join(", ");
+    const features = [...el.querySelectorAll("[data-feature]")].map(i => `"${i.dataset.feature}" ${i.checked ? 1 : 0}`).join(", ") || "normal";
     for (const node of [tester, glyphs]) node.style.fontVariationSettings = settings;
+    for (const node of [tester, ...lines]) node.style.fontFeatureSettings = features;
     tester.style.fontSize = el.querySelector("[data-size]").value + "px";
   };
   el.querySelectorAll("input[type=range]").forEach(i => i.addEventListener("input", () => { i.nextElementSibling.textContent = i.value; apply(); }));
+  el.querySelectorAll("[data-feature]").forEach(i => i.addEventListener("change", apply));
   apply();
   const dl = el.querySelector(".dl");
   for (const [kind, files] of Object.entries(f.downloads)) {

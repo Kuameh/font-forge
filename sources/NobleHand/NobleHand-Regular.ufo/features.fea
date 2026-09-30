@@ -1,0 +1,9 @@
+languagesystem DFLT dflt;
+languagesystem latn dflt;
+
+# Standard ligatures, on by default (ADR-0009): the crossbars join the way the hand joins them.
+feature liga {
+    sub f f by f_f;
+    sub f t by f_t;
+    sub t t by t_t;
+} liga;
